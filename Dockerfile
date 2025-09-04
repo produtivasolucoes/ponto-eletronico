@@ -15,11 +15,14 @@ RUN a2enmod rewrite
 # Copia todos os arquivos do projeto para o diretório padrão do Apache
 COPY . /var/www/html
 
-# Define a pasta pública como diretório raiz do servidor web
+# Define como diretório de trabalho a pasta pública para o servidor web
 WORKDIR /var/www/html/public
 
 # Ajusta permissões das pastas storage e bootstrap/cache para permitir escrita pelo servidor
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+
+# Volta para a raiz do projeto para instalar as dependências via Composer
+WORKDIR /var/www/html
 
 # Copia o Composer da imagem oficial para este container
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
